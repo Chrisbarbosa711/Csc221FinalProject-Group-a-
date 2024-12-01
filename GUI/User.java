@@ -21,17 +21,18 @@ public class User{
     this.workouts.remove(workout);
   }
 
-  public void returnWorkouts(){
-    System.out.printf("Workouts added:\n");
-    if(this.workouts.size() == 0){
-      System.out.println("You have no workouts");
-    }
-    else{
-      for(String w : workouts){
-        System.out.println(w);
-      }
-    }
-  }
+  public String returnWorkouts(){
+	    System.out.printf("Workouts added:\n");
+	    if(this.workouts.size() == 0){
+	      System.out.println("You have no workouts");
+	    }
+	    else{
+	      for(String w : workouts){
+	        System.out.println(w);
+	      }
+	    }
+	    return "";
+	  }
 
   public Boolean checkWorkout(String workout){
     if(workouts.size() == 0){
