@@ -8,51 +8,63 @@ public class Windows extends JFrame{
   
   public void myWindows(){
     final User instance = new User();
-    // Create a JFrame (the window)
-        final JFrame launchPage = new JFrame("Fitness application");
-          JLabel label = new JLabel("Welcome to the Fitness application", SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.PLAIN, 24));
-          JButton button = new JButton("close");
-          JButton button2 = new JButton("Enter");
-          final JTextField textField = new JTextField(20);
-          launchPage.add(button);
-          launchPage.add(button2);
-          launchPage.add(label, BorderLayout.CENTER);
-          launchPage.add(textField, BorderLayout.SOUTH);
-          // Set the size of the frame
-          launchPage.setSize(475, 500);
-    launchPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-          final JFrame WorkoutsPage = new JFrame("exercise lists");
-          WorkoutsPage.setSize(475, 500);
-          JButton button3 = new JButton("back");
-          JLabel label2 = new JLabel("workouts list to be added", SwingConstants.CENTER);
-          JButton button4 = new JButton("search");
-          JButton button5 = new JButton("test workout");
-          final JFrame SelectWorkoutPage = new JFrame("Selected Workout");
+	  	GridLayout gb = new GridLayout(2, 2);
+    
+	  	// Create a JFrame (the window)
+	  	final JFrame launchPage = new JFrame("Fitness application");
+	  	JLabel LPGreeting = new JLabel("Welcome to the Fitness application", SwingConstants.CENTER);
+	  	LPGreeting.setFont(new Font("Arial", Font.PLAIN, 24));
+	  	//buttons for the launch page
+	  	JButton CloseWindow = new JButton("close");
+	  	JButton EnterApp = new JButton("Enter");
+	  	final JTextField textField = new JTextField(20);
+	  	launchPage.add(CloseWindow);
+	  	launchPage.add(EnterApp);
+	  	launchPage.add(LPGreeting, BorderLayout.CENTER);
+	  	launchPage.add(textField, BorderLayout.SOUTH);
+    
+	  	// Set the size of the frame
+	  	launchPage.setSize(475, 500);
+	  	//The main window where the exercise interaction takes place
+	  	final JFrame WorkoutsPage = new JFrame("exercise lists");
+	  	WorkoutsPage.setSize(475, 500);
+  
+	  	//buttons, etc. for the WorkoutsPage window
+	  	JButton ReturnToLaunch = new JButton("back");
+	  	JLabel label2 = new JLabel("workouts list to be added", SwingConstants.CENTER);
+        JButton SearchButton = new JButton("search");			
+        JButton button5 = new JButton("test workout");
+          
+        //window to add or remove a workout from the users list
+          final JFrame SelectWorkoutPage = new JFrame("Select a Workout");
           SelectWorkoutPage.setSize(475, 500);
-          final JButton button7 = new JButton("Add");
-          final JButton button8 = new JButton("Remove");
+          SelectWorkoutPage.setLayout(gb);
+          final JButton AddWorkout = new JButton("Add");
+          final JButton RemoveWorkout = new JButton("Remove");
           JLabel selectScreen = new JLabel("select whether to add or remove this workout", SwingConstants.CENTER);
-          SelectWorkoutPage.add(button7);
-          SelectWorkoutPage.add(button8);
+          
+          SelectWorkoutPage.add(AddWorkout);
+          SelectWorkoutPage.add(RemoveWorkout);
           SelectWorkoutPage.add(selectScreen);
           label2.setFont(new Font("Arial", Font.PLAIN, 24));
-          WorkoutsPage.add(button3);
-          WorkoutsPage.add(button4);
+          
+          WorkoutsPage.add(ReturnToLaunch);
+          WorkoutsPage.add(SearchButton);
           WorkoutsPage.add(button5);
           WorkoutsPage.add(label2, BorderLayout.CENTER);
+          
+          final JFrame UserWorkoutsPage = new JFrame("Users workouts");
 
 
-          button.setBounds(1, 2, 100, 30); // Set button position and size
-          button.addActionListener(new ActionListener() {
+          CloseWindow.setBounds(1, 2, 100, 30); // Set button position and size
+          CloseWindow.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                     System.exit(0);
               }
           });
-          //button two will be used to tranfer to the next page
-          button2.setBounds(550, 350, 250, 50); // Set button position and size
-            button2.addActionListener(new ActionListener() {
+          //button two will be used to transfer to the next page
+          EnterApp.setBounds(550, 420, 250, 50); // Set button position and size
+            EnterApp.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                   WorkoutsPage.setVisible(true);
                 }
@@ -65,30 +77,44 @@ public class Windows extends JFrame{
                   JLabel name = new JLabel("Welcome, " + instance.returnName());
                   name.setFont(new Font("Arial", Font.PLAIN, 12));
                 name.setBounds(1, 5, 100, 30);
-                  JButton button6 = new JButton("workouts list");
+                  JButton UsersList = new JButton("workouts list");
                   WorkoutsPage.add(name);
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-                buttonPanel.add(button6);
+                buttonPanel.add(UsersList);
                 WorkoutsPage.add(buttonPanel, BorderLayout.NORTH);
+                
+                UsersList.setBounds(1, 100, 100, 50);
+                UsersList.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                    	UserWorkoutsPage.setVisible(true);
+                    	String st = instance.returnWorkouts();
+                        JLabel Workouts = new JLabel(st);
+                        Workouts.setBounds(200, 300, 100, 30);
+                        UserWorkoutsPage.add(Workouts);
+                    }
+                });
+
               }
           });
-          button3.setBounds(1, 2, 100, 30); // Set button position and size
+          ReturnToLaunch.setBounds(1, 2, 100, 30); // Set button position and size
           //to go back to launch screen from the new window
-          button3.addActionListener(new ActionListener() {
+          ReturnToLaunch.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
               launchPage.setVisible(true);
               }
           });
 
-          button4.setBounds(550, 350, 250, 50); // Set button position and size
+          SearchButton.setBounds(550, 500, 250, 50); // Set button position and size
           //go to search button window from the window
           //the search button currently does not work
-          button4.addActionListener(new ActionListener() {
+          SearchButton.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
               SearchBox s = new SearchBox("Look for workouts");
               s.setVisible(true);
               }
-          });
+          }); 
+          
+          
           button5.setBounds(550, 420, 250, 50); // Set button position and size
           button5.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
@@ -96,23 +122,26 @@ public class Windows extends JFrame{
               }
           });
           // need to create a window for these two button(not made yet)
-          button7.setBounds(1, 2, 100, 50);
-          button7.addActionListener(new ActionListener() {
+          AddWorkout.setBounds(1, 2, 100, 50);
+          AddWorkout.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                   if(!(instance.checkWorkout("test workout"))){
                     instance.addWorkout("test workout");
                   }
               }
           });
-          button8.setBounds(1, 100, 100, 50);
-          button8.addActionListener(new ActionListener() {
+          RemoveWorkout.setBounds(1, 100, 100, 50);
+          RemoveWorkout.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                   if(instance.checkWorkout("test workout")){
                     instance.removeWorkout("test workout");
                   }
               }
           });
+          
+          
 
           launchPage.setVisible(true);
+          launchPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 }
