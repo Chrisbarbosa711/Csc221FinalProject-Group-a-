@@ -3,35 +3,39 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
+
+
+//(NOTE) ANYTHING WHICH IS NAMED LABELX OR BUTTONX IS TEMPERARY
+
 @SuppressWarnings("serial")
 public class Windows extends JFrame{
   
   public void myWindows(){
-    final User instance = new User();
-	  	GridLayout gb = new GridLayout(2, 2);
+	final User instance = new User();
+	GridLayout gb = new GridLayout(2, 2);
     
-	  	// Create a JFrame (the window)
-	  	final JFrame launchPage = new JFrame("Fitness application");
-	  	JLabel LPGreeting = new JLabel("Welcome to the Fitness application", SwingConstants.CENTER);
-	  	LPGreeting.setFont(new Font("Arial", Font.PLAIN, 24));
-	  	//buttons for the launch page
-	  	JButton CloseWindow = new JButton("close");
-	  	JButton EnterApp = new JButton("Enter");
-	  	final JTextField textField = new JTextField(20);
-	  	launchPage.add(CloseWindow);
-	  	launchPage.add(EnterApp);
-	  	launchPage.add(LPGreeting, BorderLayout.CENTER);
-	  	launchPage.add(textField, BorderLayout.SOUTH);
+	// Create a JFrame (the window)
+	final JFrame launchPage = new JFrame("Fitness application");
+	JLabel LPGreeting = new JLabel("Welcome to the Fitness application", SwingConstants.CENTER);
+	LPGreeting.setFont(new Font("Arial", Font.PLAIN, 24));
+	//buttons for the launch page
+	JButton CloseWindow = new JButton("close");
+	JButton EnterApp = new JButton("Enter");
+	final JTextField textField = new JTextField(20);
+	launchPage.add(CloseWindow);
+	launchPage.add(EnterApp);
+	launchPage.add(LPGreeting, BorderLayout.CENTER);
+	launchPage.add(textField, BorderLayout.SOUTH);
     
-	  	// Set the size of the frame
-	  	launchPage.setSize(475, 500);
-	  	//The main window where the exercise interaction takes place
-	  	final JFrame WorkoutsPage = new JFrame("exercise lists");
-	  	WorkoutsPage.setSize(475, 500);
+	// Set the size of the frame
+	launchPage.setSize(475, 500);
+	//The main window where the exercise interaction takes place
+	final JFrame WorkoutsPage = new JFrame("exercise lists");
+	WorkoutsPage.setSize(475, 500);
   
-	  	//buttons, etc. for the WorkoutsPage window
-	  	JButton ReturnToLaunch = new JButton("back");
-	  	JLabel label2 = new JLabel("workouts list to be added", SwingConstants.CENTER);
+	//buttons, etc. for the WorkoutsPage window
+	JButton ReturnToLaunch = new JButton("back");
+	JLabel label2 = new JLabel("workouts list to be added", SwingConstants.CENTER);
         JButton SearchButton = new JButton("search");			
         JButton button5 = new JButton("test workout");
           
