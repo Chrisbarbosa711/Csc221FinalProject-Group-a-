@@ -17,15 +17,21 @@ public class Windows extends JFrame{
 	// Create a JFrame (the window)
 	final JFrame launchPage = new JFrame("Fitness application");
 	JLabel LPGreeting = new JLabel("Welcome to the Fitness application", SwingConstants.CENTER);
+	JLabel LogInLabel = new JLabel("please enter your name in the textbox below:", SwingConstants.CENTER);
 	LPGreeting.setFont(new Font("Arial", Font.PLAIN, 24));
 	//buttons for the launch page
 	JButton CloseWindow = new JButton("close");
+	final JButton submitButton = new JButton("Submit");
 	JButton EnterApp = new JButton("Enter");
+	EnterApp.setVisible(false); //we initially set not visible
 	final JTextField textField = new JTextField(20);
 	launchPage.add(CloseWindow);
-	launchPage.add(EnterApp);
-	launchPage.add(LPGreeting, BorderLayout.CENTER);
-	launchPage.add(textField, BorderLayout.SOUTH);
+	launchPage.add(LPGreeting, BorderLayout.NORTH);
+	launchPage.add(textField);
+	launchPage.add(submitButton);
+	launchPage.add(EnterApp, BorderLayout.SOUTH);
+	launchPage.add(LogInLabel, BorderLayout.CENTER);
+	launchPage.pack();	
     
 	// Set the size of the frame
 	launchPage.setSize(475, 500);
@@ -67,13 +73,26 @@ public class Windows extends JFrame{
               }
           });
           //button two will be used to transfer to the next page
-          EnterApp.setBounds(550, 420, 250, 50); // Set button position and size
             EnterApp.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                   WorkoutsPage.setVisible(true);
                 }
             });
 
+	  submitButton.setBounds(800, 420, 100, 50);
+            submitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // When the submit button is pressed, hide it and show the enter button
+                	String text = textField.getText();
+                	if(!text.isEmpty()) {
+                    submitButton.setVisible(false);
+                    EnterApp.setVisible(true); //once the user has entered a name then we set visible
+                	}
+                }
+            });
+	  
+	  textField.setBounds(550, 420, 250, 50);
           textField.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                   String text = textField.getText();
