@@ -1,4 +1,5 @@
 package GUI;
+import com.softwarefinal.gym.Load; //import the class from another project so we can use it.
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -75,7 +76,8 @@ public class Windows extends JFrame{
           //button two will be used to transfer to the next page
             EnterApp.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                  WorkoutsPage.setVisible(true);
+                  Load create = new Load(); //creates Load object 
+		create.run(); //runs the page created by Load class
                 }
             });
 
