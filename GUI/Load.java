@@ -14,6 +14,11 @@ import javax.swing.JPanel;
 
 public class Load {
 	public class DayButton extends JButton {
+		//adding this allowed it to run in eclipse
+		/** 
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		
 		DayButton(JPanel panel, JPanel day, String text){
 			super(text);
