@@ -44,7 +44,7 @@ public class Load {
                 JLabel dayLabel = new JLabel(exercisesText.toString(), SwingConstants.CENTER);
                 dayLabel.setFont(new Font("Arial", Font.PLAIN, 24));
                 dayPage.add(dayLabel, BorderLayout.CENTER);
-                day.add(dayLabel);
+                day.add(dayLabel, text);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
