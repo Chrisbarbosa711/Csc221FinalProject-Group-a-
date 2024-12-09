@@ -6,9 +6,6 @@ public class Main {
 		Windows instance = new Windows();
 	    	instance.myWindows();
 
-		Load create = new Load();
-		create.run();
-
 	}
 
 }
