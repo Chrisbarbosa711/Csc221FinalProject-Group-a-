@@ -1,16 +1,12 @@
 package com.softwarefinal.gym;
+import SQLtest.DBconnection;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.sql.*;
 
 public class Load {
 	public class DayButton extends JButton {
@@ -23,14 +19,35 @@ public class Load {
 		DayButton(JPanel panel, JPanel day, String text){
 			super(text);
 			panel.add(this);
+			DBconnection s = new DBconnection(); //create a DBconnection object
+			s.establishConnection(); //Establish the connection to the database
 			
 			JPanel dayPage = new JPanel();
 			dayPage.setBackground(Color.PINK);
 			dayPage.setLayout(new BorderLayout());
-			
-			JLabel dayLabel = new JLabel(text, JLabel.CENTER);
-			dayPage.add(dayLabel, BorderLayout.CENTER);
-			day.add(dayPage, text);
+
+
+			//adds the dayexercises resultset to each day upon the press of the button
+			ResultSet exercises = s.dayExercises(text);
+			try {
+                StringBuilder exercisesText = new StringBuilder("Exercises for " + text + ": ");
+                // Iterate through the ResultSet and append the exercise names
+                while (exercises.next()) {
+                    exercisesText.append(exercises.getString("exercise_name")).append(", ");
+                }
+                // Remove the last comma
+                if (exercisesText.length() > 0) {
+                    exercisesText.setLength(exercisesText.length() - 2);
+                }
+
+                // Create a label with the exercises
+                JLabel dayLabel = new JLabel(exercisesText.toString(), SwingConstants.CENTER);
+                dayLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+                dayPage.add(dayLabel, BorderLayout.CENTER);
+                day.add(dayLabel);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 			
 			this.addActionListener(new ActionListener() {
 				@Override
