@@ -1,5 +1,7 @@
-package com.softwarefinal.gym;
+package GUI;
+
 import SQLtest.DBconnection;
+import SQLtest.UnpackRS;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,80 +9,84 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
-public class Load {
-	public class DayButton extends JButton {
-		//adding this allowed it to run in eclipse
-		/** 
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+public class Load extends JPanel {
+    public class DayButton extends JButton {
+        private static final long serialVersionUID = 1L;
 
-		DayButton(JPanel panel, JPanel day, String text){
-			super(text);
-			panel.add(this);
-			DBconnection s = new DBconnection(); //create a DBconnection object
-			s.establishConnection(); //Establish the connection to the database
+        DayButton(JPanel panel, JPanel day, String text) {
+            super(text);
+            panel.add(this);
 
-			JPanel dayPage = new JPanel();
-			dayPage.setBackground(Color.PINK);
-			dayPage.setLayout(new BorderLayout());
+            JPanel dayPage = new JPanel();
+            dayPage.setBackground(Color.PINK);
+            dayPage.setLayout(new BorderLayout());
 
-
-			//adds the dayexercises resultset to each day upon the press of the button
-			ResultSet exercises = s.dayExercises(text);
-			try {
-                StringBuilder exercisesText = new StringBuilder("Exercises for " + text + ": ");
-                // Iterate through the ResultSet and append the exercise names
-                while (exercises.next()) {
-                    exercisesText.append(exercises.getString("exercise_name")).append(", ");
+            // Retrieve and display exercises for the selected day
+            ResultSet exercises = DBconnection.dayExercises(text);
+            try {
+                ArrayList<String[]> exerciseList = UnpackRS.unpackDayExercise(exercises);
+                StringBuilder exercisesText = new StringBuilder("Exercises for " + text + ":<br><ul>");
+                
+                for (String[] exercise : exerciseList) {
+                    exercisesText.append("<li>").append(exercise[0]).append("</li>");
                 }
-                // Remove the last comma
-                if (exercisesText.length() > 0) {
-                    exercisesText.setLength(exercisesText.length() - 2);
-                }
+                exercisesText.append("</ul>");
 
-                // Create a label with the exercises
-                JLabel dayLabel = new JLabel(exercisesText.toString(), SwingConstants.CENTER);
-                dayLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+                JLabel dayLabel = new JLabel("<html>" + exercisesText + "</html>", SwingConstants.CENTER);
+                dayLabel.setFont(new Font("Arial", Font.PLAIN, 18));
                 dayPage.add(dayLabel, BorderLayout.CENTER);
-                day.add(dayLabel);
-                day.add(dayLabel, text);
-            } catch (SQLException e) {
+
+                // Create and add the "Search exercise for [day]" button
+                JButton searchButton = new JButton("Search exercise for " + text);
+                searchButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Pass the current day (e.g., "Monday") to the ExerciseSearchGUI
+                        ExerciseSearchGUI exerciseSearchPage = new ExerciseSearchGUI(text);
+                        CardLayout layout = (CardLayout) day.getLayout();
+                        day.add(exerciseSearchPage, "ExerciseSearch");
+                        layout.show(day, "ExerciseSearch"); // Switch to the new page
+                    }
+                });
+
+                // Add the search button to the bottom of the page
+                dayPage.add(searchButton, BorderLayout.SOUTH);
+
+                day.add(dayPage, text);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-			this.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					CardLayout layout = (CardLayout) day.getLayout();
-	                layout.show(day, text);
-				}
-			});
-		}
-	}
+            this.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                    CardLayout layout = (CardLayout) day.getLayout();
+                    layout.show(day, text);
+                }
+            });
+        }
+    }
 
-	public void run(){
-		JFrame frame = new JFrame("Select Day");
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        frame.setLayout(new BorderLayout());
-	        frame.setBackground(Color.PINK);
-	        frame.setSize(1000, 1000); 
+    public void run() {
+        // Set the layout for this panel (Load)
+        this.setLayout(new BorderLayout());
+        this.setBackground(Color.PINK);
 
-	    	JPanel Buttons = new JPanel();
-	    	Buttons.setLayout(new GridLayout(1, 7, 20, 0));
+        JPanel Buttons = new JPanel();
+        Buttons.setLayout(new GridLayout(1, 7, 20, 0));
 
-	    	JPanel Pages = new JPanel(new CardLayout());
+        JPanel Pages = new JPanel(new CardLayout());
 
-	    	String[] week = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-	    	for (String day: week) {
-	            DayButton dayButton = new DayButton(Buttons, Pages, day);
-	            Buttons.add(dayButton);
+        String[] week = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        for (String day : week) {
+            DayButton dayButton = new DayButton(Buttons, Pages, day);
+            Buttons.add(dayButton);
         }
 
-         frame.add(Buttons, BorderLayout.NORTH); 
-         frame.add(Pages, BorderLayout.CENTER); 
-
-         frame.setVisible(true);
-	}
+        // Add components to this panel instead of frame
+        this.add(Buttons, BorderLayout.NORTH);
+        this.add(Pages, BorderLayout.CENTER);
+    }
 }

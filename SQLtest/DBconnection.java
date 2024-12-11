@@ -55,7 +55,7 @@ public class DBconnection {
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
         }
-        
+        System.out.println("Returning searchExercise result set");
         return rs;
     }
 
@@ -63,40 +63,41 @@ public class DBconnection {
     
     // add exercise, mark it as true in tracker for given day
     public static void addExercise(String day, String exerciseName) {
-    	System.out.println("Add exercise request recieved");
+    	System.out.println("Add exercise request recieved for day: " + day + " and exercise: " + exerciseName);
         String query = "UPDATE tracker SET " + day + " = TRUE WHERE Track_exercise = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, exerciseName);  // Replace the placeholder
             pstmt.executeUpdate();  // Execute the update
-
+            System.out.println("adding exercise...");
         } catch (SQLException e) {
             System.out.println("Error updating tracker: " + e.getMessage());
         }
         
     }
     
-    // delete exercise, marks it false in tracker for given day
-    public static void deleteExercise(String exerciseName) {
-    	System.out.println("delete exercise request recieved");
-        String query = "DELETE FROM tracker WHERE Track_exercise = ?";
+ // delete exercise, marks it false in tracker for given day
+    public static void deleteExercise(String day, String exerciseName) {
+        System.out.println("Delete exercise request received");
+
+        // Update the specific day column and mark it as false
+        String query = "UPDATE tracker SET " + day + " = FALSE WHERE Track_exercise = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, exerciseName);  // Replace the placeholder with the exercise name
-
-            pstmt.executeUpdate();  // Execute the delete query
-
+            pstmt.executeUpdate();  // Execute the update query
+            System.out.println("Deleting exercise...");
         } catch (SQLException e) {
-            System.out.println("Error deleting exercise: " + e.getMessage());
+            System.out.println("Error updating tracker: " + e.getMessage());
         }
-        
     }
+
 
     // exercises by day, returns a result set of exercises, that are marked ture for the given day on the tracker table
     // also includes the reps and sets
     public static ResultSet dayExercises(String day) {
     	
-    	System.out.println("Add exercise request recieved");
+    	System.out.println("Day Exercise request recieved for day : " + day);
     	
     	String query = "SELECT Track_exercise, sets, reps FROM tracker WHERE " + day + " = TRUE";
         try {
@@ -110,6 +111,7 @@ public class DBconnection {
             }
 
             PreparedStatement pstmt = conn.prepareStatement(query);
+            System.out.println("Returning dayExercise result set");
             return pstmt.executeQuery();  // Return the result set
         } catch (SQLException e) {
             System.out.println("Error retrieving exercises for " + day + ": " + e.getMessage());
@@ -127,6 +129,7 @@ public class DBconnection {
         try {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, exerciseName);  // Replace the placeholder with the exercise name
+            System.out.println("Returning exercise detail rs");
             return pstmt.executeQuery();  // Return the result set
         } catch (SQLException e) {
             System.out.println("Error retrieving details for '" + exerciseName + "': " + e.getMessage());
@@ -142,7 +145,7 @@ public class DBconnection {
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, num);               // Set the new number of sets
             pstmt.setString(2, exerciseName);  // Set the exercise name
-            
+            System.out.println("Setting sets...");
             pstmt.executeUpdate();  // Execute the update query
 
         } catch (SQLException e) {
@@ -158,7 +161,7 @@ public class DBconnection {
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, num);               // Set the new number of reps
             pstmt.setString(2, exerciseName);  // Set the exercise name
-
+            System.out.println("Setting reps");
             pstmt.executeUpdate();  // Execute the update query
 
         } catch (SQLException e) {
