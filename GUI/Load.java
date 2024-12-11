@@ -14,42 +14,60 @@ import java.util.ArrayList;
 public class Load extends JPanel {
 
     public void refreshDayExercises(String day, JPanel Pages) {
-    	System.out.println("Refreshing " + day);
-        ResultSet exercises = DBconnection.dayExercises(day);
-        try {
-            ArrayList<String[]> exerciseList = UnpackRS.unpackDayExercise(exercises);
-            StringBuilder exercisesText = new StringBuilder("Exercises for " + day + ":<br><ul>");
+	    System.out.println("Refreshing " + day);
+	    ResultSet exercises = DBconnection.dayExercises(day);
+	    try {
+	        ArrayList<String[]> exerciseList = UnpackRS.unpackDayExercise(exercises);
 
-            for (String[] exercise : exerciseList) {
-                exercisesText.append("<li>").append(exercise[0]).append("</li>");
-            }
-            exercisesText.append("</ul>");
+	        // Create a JPanel to hold exercise buttons
+	        JPanel exercisePanel = new JPanel();
+	        exercisePanel.setLayout(new BoxLayout(exercisePanel, BoxLayout.Y_AXIS)); // Vertical list of buttons
 
-            JLabel dayLabel = new JLabel("<html>" + exercisesText + "</html>", SwingConstants.CENTER);
-            dayLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+	        // Create a button for each exercise
+	        for (String[] exercise : exerciseList) {
+	            String exerciseName = exercise[0];
+	            JButton exerciseButton = new JButton(exerciseName);
+	            exerciseButton.setFont(new Font("Arial", Font.PLAIN, 16));
 
-            JPanel dayPage = new JPanel(new BorderLayout());
-            dayPage.setBackground(Color.PINK);
-            dayPage.add(dayLabel, BorderLayout.CENTER);
+	            // Define what happens when the exercise button is clicked
+	            exerciseButton.addActionListener(e -> {
+	                // Action for when the exercise is clicked
+	                JOptionPane.showMessageDialog(this, "You clicked on: " + exerciseName);
+	                // You could add more logic here to handle the clicked exercise
+	            });
 
-            JButton searchButton = new JButton("Search exercise for " + day);
-            searchButton.addActionListener(e -> {
-                ExerciseSearchGUI exerciseSearchPage = new ExerciseSearchGUI(this, day, Pages);
-                CardLayout layout = (CardLayout) Pages.getLayout();
-                Pages.add(exerciseSearchPage, "ExerciseSearch");
-                layout.show(Pages, "ExerciseSearch");
-            });
+	            // Add button to the panel
+	            exercisePanel.add(exerciseButton);
+	        }
 
-            dayPage.add(searchButton, BorderLayout.SOUTH);
+	        // Create the main panel to display exercises
+	        JLabel dayLabel = new JLabel("Exercises for " + day, SwingConstants.CENTER);
+	        dayLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 
-            Pages.add(dayPage, day); 
-            CardLayout layout = (CardLayout) Pages.getLayout();
-            layout.show(Pages, day); 
+	        JPanel dayPage = new JPanel(new BorderLayout());
+	        dayPage.setBackground(Color.PINK);
+	        dayPage.add(dayLabel, BorderLayout.NORTH);  // Add the label at the top
+	        dayPage.add(exercisePanel, BorderLayout.CENTER);  // Add the exercise buttons in the center
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	        // Add a search button at the bottom
+	        JButton searchButton = new JButton("Search exercise for " + day);
+	        searchButton.addActionListener(e -> {
+	            ExerciseSearchGUI exerciseSearchPage = new ExerciseSearchGUI(this, day, Pages);
+	            CardLayout layout = (CardLayout) Pages.getLayout();
+	            Pages.add(exerciseSearchPage, "ExerciseSearch");
+	            layout.show(Pages, "ExerciseSearch");
+	        });
+
+	        dayPage.add(searchButton, BorderLayout.SOUTH);
+
+	        Pages.add(dayPage, day);
+	        CardLayout layout = (CardLayout) Pages.getLayout();
+	        layout.show(Pages, day);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
     public class DayButton extends JButton {
         private static final long serialVersionUID = 1L;
