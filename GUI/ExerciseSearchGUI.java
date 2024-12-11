@@ -92,6 +92,8 @@ public class ExerciseSearchGUI extends JPanel {
 
         JButton addButton = new JButton("Add Exercise for " + currentDay);
         addButton.addActionListener(e -> {
+            //message confirmation that the user has added the exercise
+            JOptionPane.showMessageDialog(null, "You have successfully added " + exerciseName + " for " + currentDay);
             DBconnection.addExercise(currentDay, exerciseName);
         });
         detailPanel.add(addButton, BorderLayout.NORTH);
