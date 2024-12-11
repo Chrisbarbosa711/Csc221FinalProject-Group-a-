@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Load extends JPanel {
 
     public void refreshDayExercises(String day, JPanel Pages) {
+    	System.out.println("Refreshing " + day);
         ResultSet exercises = DBconnection.dayExercises(day);
         try {
             ArrayList<String[]> exerciseList = UnpackRS.unpackDayExercise(exercises);
