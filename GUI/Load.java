@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Load extends JPanel {
 
-    public void refreshDayExercises(String day, JPanel Pages) {
+   public void refreshDayExercises(String day, JPanel Pages) {
 	    System.out.println("Refreshing " + day);
 	    ResultSet exercises = DBconnection.dayExercises(day);
 	    try {
@@ -26,14 +26,67 @@ public class Load extends JPanel {
 	        // Create a button for each exercise
 	        for (String[] exercise : exerciseList) {
 	            String exerciseName = exercise[0];
+
+	            // Create a button for the exercise
 	            JButton exerciseButton = new JButton(exerciseName);
 	            exerciseButton.setFont(new Font("Arial", Font.PLAIN, 16));
 
+	            // Define a custom class to store the exercise and its reps/sets
+	            class ExerciseInfo {
+	                String name;
+	                String reps;
+	                String sets;
+
+	                public ExerciseInfo(String name) {
+	                    this.name = name;
+	                    this.reps = "";
+	                    this.sets = "";
+	                }
+
+	                public String getDisplayText() {
+	                    if (reps.isEmpty() && sets.isEmpty()) {
+	                        return name;
+	                    }
+	                    return name + " - " + sets + " sets, " + reps + " reps";
+	                }
+	            }
+
+	            // Store exercise information
+	            ExerciseInfo exerciseInfo = new ExerciseInfo(exerciseName);
+
 	            // Define what happens when the exercise button is clicked
 	            exerciseButton.addActionListener(e -> {
-	                // Action for when the exercise is clicked
-	                JOptionPane.showMessageDialog(this, "You clicked on: " + exerciseName);
-	                // You could add more logic here to handle the clicked exercise
+	                // First, show a confirmation dialog for removing the exercise
+	                int option = JOptionPane.showConfirmDialog(this,
+	                        "Do you want to remove " + exerciseName + " from " + day + "?",
+	                        "Remove Exercise",
+	                        JOptionPane.YES_NO_OPTION);
+
+	                if (option == JOptionPane.YES_OPTION) {
+	                    // Remove the exercise button from the panel
+	                    exercisePanel.remove(exerciseButton);
+	                    exercisePanel.revalidate();  // Revalidate the panel to update the layout
+	                    exercisePanel.repaint();  // Repaint the panel to reflect the changes
+	                    System.out.println(exerciseName + " has been removed from " + day);
+	                } else {
+	                    // If the user doesn't want to remove the exercise, ask for reps and sets
+	                	String sets = JOptionPane.showInputDialog(this, "Enter sets for " + exerciseName);
+	                    String reps = JOptionPane.showInputDialog(this, "Enter reps for " + exerciseName);
+
+	                    // Validate and update the reps and sets if not empty
+	                    if (reps != null && !reps.isEmpty()) {
+	                        exerciseInfo.reps = reps;
+	                    }
+	                    if (sets != null && !sets.isEmpty()) {
+	                        exerciseInfo.sets = sets;
+	                    }
+
+	                    // Update the button text to reflect the reps and sets
+	                    exerciseButton.setText(exerciseInfo.getDisplayText());
+
+	                    // Optionally, store the data in the database or elsewhere for persistence
+	                    System.out.println("For " + exerciseName + " on " + day + ": " + sets + " sets, " + reps + " reps");
+	                }
 	            });
 
 	            // Add button to the panel
