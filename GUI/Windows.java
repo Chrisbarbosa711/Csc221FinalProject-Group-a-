@@ -68,26 +68,6 @@ public class Windows extends JFrame{
               public void actionPerformed(ActionEvent e) {
                   String text = textField.getText();
                   instance.setName(text);
-                  JLabel name = new JLabel("Welcome, " + instance.returnName());
-                  name.setFont(new Font("Arial", Font.PLAIN, 12));
-                name.setBounds(1, 5, 100, 30);
-                  JButton UsersList = new JButton("workouts list");
-                  WorkoutsPage.add(name);
-                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-                buttonPanel.add(UsersList);
-                WorkoutsPage.add(buttonPanel, BorderLayout.NORTH);
-                
-                UsersList.setBounds(1, 100, 100, 50);
-                UsersList.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                    	UserWorkoutsPage.setVisible(true);
-                    	String st = instance.returnWorkouts();
-                        JLabel Workouts = new JLabel(st);
-                        Workouts.setBounds(200, 300, 100, 30);
-                        UserWorkoutsPage.add(Workouts);
-                    }
-                });
-
               }
           });
           
