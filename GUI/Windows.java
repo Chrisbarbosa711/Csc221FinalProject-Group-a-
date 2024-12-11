@@ -56,7 +56,7 @@ public class Windows extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String text = textField.getText();
                 //deals with issue of user not entering anything or entering a whitespace only or before the input
-                if(text.isEmpty() || Character.isWhitespace(text.charAt(0))) {
+                if(text.isEmpty() || Character.isWhitespace(text.charAt(0)) || text.length() > 24) {
                 	JOptionPane.showMessageDialog(null, "Please enter a valid username");
                 }
                 else {
