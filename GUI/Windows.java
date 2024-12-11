@@ -10,7 +10,6 @@ public class Windows extends JFrame{
   
     public void myWindows(){
         final User instance = new User();
-        GridLayout gb = new GridLayout(2, 2);
     
         // Create a JFrame (the window)
         final JFrame launchPage = new JFrame("Fitness application");
@@ -56,8 +55,12 @@ public class Windows extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = textField.getText();
-                if(!text.isEmpty()) {
-                    submitButton.setVisible(false);
+                //deals with issue of user not entering anything or entering a whitespace only or before the input
+                if(text.isEmpty() || Character.isWhitespace(text.charAt(0))) {
+                	JOptionPane.showMessageDialog(null, "Please enter a valid username");
+                }
+                else {
+                	submitButton.setVisible(false);
                     EnterApp.setVisible(true);
                 }
             }
