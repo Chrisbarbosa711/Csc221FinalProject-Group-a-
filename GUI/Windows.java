@@ -5,9 +5,6 @@ import java.awt.event.*;
 import java.awt.*;
 
 
-
-//(NOTE) ANYTHING WHICH IS NAMED LABELX OR BUTTONX IS TEMPERARY
-
 @SuppressWarnings("serial")
 public class Windows extends JFrame{
   
@@ -17,13 +14,11 @@ public class Windows extends JFrame{
     
 	  	// Create a JFrame (the window)
 	  	final JFrame launchPage = new JFrame("Fitness application");
-	  	//######## ADDED TODAY
 	  	JLabel LPGreeting = new JLabel("Welcome to the fitness tracker application", SwingConstants.CENTER);
 	  	JLabel LogInLabel = new JLabel("please enter your name in the textbox below:", SwingConstants.CENTER);
 	  	LPGreeting.setFont(new Font("Arial", Font.PLAIN, 30));
 	  	//buttons for the launch page
 	  	JButton CloseWindow = new JButton("close");
-	  	//###### ADDED TODAY
 	  	final JButton submitButton = new JButton("Submit");
 	  	JButton EnterApp = new JButton("Enter");
 	  	EnterApp.setVisible(false);
@@ -31,7 +26,6 @@ public class Windows extends JFrame{
 	  	launchPage.add(CloseWindow);
 	  	launchPage.add(LPGreeting, BorderLayout.NORTH);
 	  	launchPage.add(textField);
-	  	//#######ADDED TODAY
 	  	launchPage.add(submitButton);
 	  	launchPage.add(EnterApp, BorderLayout.SOUTH);
 	  	launchPage.add(LogInLabel, BorderLayout.CENTER);
@@ -40,14 +34,12 @@ public class Windows extends JFrame{
 	  	// Set the size of the frame
 	  	launchPage.setSize(475, 500);
 	  	//The main window where the exercise interaction takes place
-//NEEDED
           CloseWindow.setBounds(1, 2, 100, 30); // Set button position and size
           CloseWindow.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                     System.exit(0);
               }
           });
-//NEEDED
           //button two will be used to transfer to the next page
             EnterApp.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -55,7 +47,8 @@ public class Windows extends JFrame{
             		create.run();
                 }
             });
-            //######## NEEDED
+
+	  
             submitButton.setBounds(800, 420, 100, 50);
             submitButton.addActionListener(new ActionListener() {
                 @Override
@@ -68,8 +61,8 @@ public class Windows extends JFrame{
                 	}
                 }
             });
-            
-            //####### NEEDED
+
+	  
           textField.setBounds(550, 420, 250, 50);
           textField.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
@@ -97,8 +90,6 @@ public class Windows extends JFrame{
 
               }
           });
-          
-          //#######################################################################
           
           
           //THE FOLLOWING COULD PROVE USEFUL
