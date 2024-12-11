@@ -8,10 +8,11 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public class DBconnection {
-    private Connection conn;
+    private static Connection conn;
+    
 
     // Establish connection to the database
-    public Connection establishConnection() {
+    public static Connection establishConnection() {
         try {
             // Database credentials
             String url = "jdbc:mysql://localhost:3306/workoutsdb"; // Update with your database name
@@ -29,7 +30,7 @@ public class DBconnection {
     }
 
     // Close the connection
-    public void closeConnection() {
+    public static void closeConnection() {
         if (conn != null) {
             try {
                 conn.close();
@@ -42,7 +43,8 @@ public class DBconnection {
     
    
     // search function:
-    public ResultSet searchExercise(String searchKey) {
+    public static ResultSet searchExercise(String searchKey) {
+    	System.out.println("Search request recieved");
         ResultSet rs = null;
         String query = "SELECT exercise FROM workouts WHERE exercise LIKE ?";  // Use a prepared statement to prevent SQL injection
 
@@ -53,12 +55,15 @@ public class DBconnection {
         } catch (SQLException e) {
             System.out.println("Query failed: " + e.getMessage());
         }
+        
         return rs;
     }
+
     
     
     // add exercise, mark it as true in tracker for given day
-    public void addExercise(String day, String exerciseName) {
+    public static void addExercise(String day, String exerciseName) {
+    	System.out.println("Add exercise request recieved");
         String query = "UPDATE tracker SET " + day + " = TRUE WHERE Track_exercise = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -68,10 +73,12 @@ public class DBconnection {
         } catch (SQLException e) {
             System.out.println("Error updating tracker: " + e.getMessage());
         }
+        
     }
     
     // delete exercise, marks it false in tracker for given day
-    public void deleteExercise(String exerciseName) {
+    public static void deleteExercise(String exerciseName) {
+    	System.out.println("delete exercise request recieved");
         String query = "DELETE FROM tracker WHERE Track_exercise = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -82,11 +89,15 @@ public class DBconnection {
         } catch (SQLException e) {
             System.out.println("Error deleting exercise: " + e.getMessage());
         }
+        
     }
 
     // exercises by day, returns a result set of exercises, that are marked ture for the given day on the tracker table
     // also includes the reps and sets
-    public ResultSet dayExercises(String day) {
+    public static ResultSet dayExercises(String day) {
+    	
+    	System.out.println("Add exercise request recieved");
+    	
     	String query = "SELECT Track_exercise, sets, reps FROM tracker WHERE " + day + " = TRUE";
         try {
             // Validate the day to prevent SQL injection
@@ -104,11 +115,13 @@ public class DBconnection {
             System.out.println("Error retrieving exercises for " + day + ": " + e.getMessage());
             return null;
         }
+        
     }
     
     
     // returns all the details of a given exercise in tracker
-    public ResultSet exerciseDetail(String exerciseName) {
+    public static ResultSet exerciseDetail(String exerciseName) {
+    	System.out.println("exercise detail request recieved");
         String query = "SELECT * FROM workouts WHERE exercise = ?";
 
         try {
@@ -122,7 +135,8 @@ public class DBconnection {
     }
     
     // setting set counts for a exercise on tracker
-    public void setSets(String exerciseName, int num) {
+    public static void setSets(String exerciseName, int num) {
+    	System.out.println("set Sets request recieved");
         String query = "UPDATE tracker SET sets = ? WHERE Track_exercise = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -137,7 +151,8 @@ public class DBconnection {
     }
     
     // setting rep counts
-    public void setReps(String exerciseName, int num) {
+    public static void setReps(String exerciseName, int num) {
+    	System.out.println("set Reps request recieved");
         String query = "UPDATE tracker SET reps = ? WHERE Track_exercise = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {

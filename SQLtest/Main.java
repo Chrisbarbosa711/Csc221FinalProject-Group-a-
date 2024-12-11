@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-    	DBconnection connect = new DBconnection();
-    	connect.establishConnection();
+    	
+    	DBconnection.establishConnection();
     	
         String searchKey = "dumbbell";  // The exercise you want to search for
-        ResultSet rs = connect.searchExercise(searchKey);  // Get the ResultSet from the DBconnection
+        ResultSet rs = DBconnection.searchExercise(searchKey);  // Get the ResultSet from the DBconnection
 
       
         ArrayList<String> exercises = UnpackRS.unpackSearch(rs);
@@ -25,7 +25,7 @@ public class Main {
     	
 
     	
-    	connect.closeConnection();
+        DBconnection.closeConnection();
 	
     }
 }
