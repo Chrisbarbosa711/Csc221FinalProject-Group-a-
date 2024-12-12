@@ -73,8 +73,8 @@ public class Windows extends JFrame{
                 }
                 //if the input is valid then we make the enter button visible for them to enter the application
                 else {
-                	  submitButton.setVisible(false);
-                    EnterApp.setVisible(true);
+                	submitButton.setVisible(false);
+                      EnterApp.setVisible(true);
                 }
             }
         });
