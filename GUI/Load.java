@@ -1,5 +1,6 @@
 package GUI;
 
+//we need to import the following classes so that we can use the database functionality
 import SQLtest.DBconnection;
 import SQLtest.UnpackRS;
 
@@ -13,13 +14,22 @@ import java.util.ArrayList;
 
 public class Load extends JPanel {
 
-   public void refreshDayExercises(String day, JPanel Pages) {
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+
+//this function serves to refresh the information on each of the day panels with the exercises/reps/sets we add
+public void refreshDayExercises(String day, JPanel Pages) {
 	    System.out.println("Refreshing " + day);
+	    //we define this so that we can retrieve the data from the sqlquiery for each exercise
 	    ResultSet exercises = DBconnection.dayExercises(day);
 	    try {
+	    	
 	        ArrayList<String[]> exerciseList = UnpackRS.unpackDayExercise(exercises);
 
-	        // Create a JPanel to hold exercise buttons
+	        // Create a JPanel to hold exercise buttons for each exercise
 	        JPanel exercisePanel = new JPanel();
 	        exercisePanel.setLayout(new BoxLayout(exercisePanel, BoxLayout.Y_AXIS)); // Vertical list of buttons
 
@@ -28,8 +38,8 @@ public class Load extends JPanel {
 	            String exerciseName = exercise[0];
 	            String exSets = exercise[1];
 	            String exReps = exercise[2];
-	            // Create a button for the exercise
 	            
+	            //create and format the button for each exercise added for that day
 	            JButton exerciseButton;
 	    
 	            exerciseButton = new JButton(exerciseName + " - " + exSets + " sets, " + exReps + " reps" );
@@ -38,16 +48,16 @@ public class Load extends JPanel {
 
 	            // Define a custom class to store the exercise and its reps/sets
 	            class ExerciseInfo {
-	                String name;
-	                String reps;
-	                String sets;
-
+	                private String name;
+	                private String reps;
+	                private String sets;
+	                //define a constructor for the custom class which stored the exercise string in name and the sets and reps in strings
 	                public ExerciseInfo(String name, String reps, String sets) {
 	                    this.name = name;
 	                    this.reps = reps;
 	                    this.sets = sets;
 	                }
-
+	                //we define the string name depending on if we have sets and reps available or if the user has not entered that yet
 	                public String getDisplayText() {
 	                    if (reps.isEmpty() && sets.isEmpty()) {
 	                        return name;
@@ -61,7 +71,10 @@ public class Load extends JPanel {
 
 	            // Define what happens when the exercise button is clicked
 	            exerciseButton.addActionListener(e -> {
-	                // First, show a confirmation dialog for removing the exercise
+	                //once the button is clicked it we see three option panes
+	            	//the first one asks if the user wants to delete the exercise
+	            	//if so then it deletes it and thats it
+	            	//if not then we are given the option to add the sets and reps for the exercise
 	                int option = JOptionPane.showConfirmDialog(this,
 	                        "Do you want to remove " + exerciseName + " from " + day + "?",
 	                        "Remove Exercise",
@@ -82,7 +95,8 @@ public class Load extends JPanel {
 	                    // Validate and update the reps and sets if not empty
 	                    if (reps != null && !reps.isEmpty()) {
 	                    	
-	                    	
+	                    	//need to make sure that what the user enters is a numbers that we can use so we employ the given try catch block to
+	                    	//account for this, for both setting the reps and setting the sets of the exercise
 	                        try {
 	                            int repsCount = Integer.parseInt(reps);
 	                            exerciseInfo.reps = reps;
@@ -115,10 +129,11 @@ public class Load extends JPanel {
 	            exercisePanel.add(exerciseButton);
 	        }
 
-	        // Create the main panel to display exercises
+	        // Create the main panel to display the exercises for each day
 	        JLabel dayLabel = new JLabel("Exercises for " + day, SwingConstants.CENTER);
 	        dayLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-
+	        
+	        //the JPanel to display the days 
 	        JPanel dayPage = new JPanel(new BorderLayout());
 	        dayPage.setBackground(Color.PINK);
 	        dayPage.add(dayLabel, BorderLayout.NORTH);  // Add the label at the top
@@ -127,6 +142,7 @@ public class Load extends JPanel {
 	        // Add a search button at the bottom
 	        JButton searchButton = new JButton("Search exercise for " + day);
 	        searchButton.addActionListener(e -> {
+	        	//declare an instance of the ExerciseSearchGUI class which formats the search into an sql quiery for our database
 	            ExerciseSearchGUI exerciseSearchPage = new ExerciseSearchGUI(this, day, Pages);
 	            CardLayout layout = (CardLayout) Pages.getLayout();
 	            Pages.add(exerciseSearchPage, "ExerciseSearch");
@@ -152,12 +168,15 @@ public class Load extends JPanel {
             panel.add(this);
 
             this.addActionListener(e -> {
+            	//refreshes the page to pull any thing that was added, etc.
                 refreshDayExercises(text, day); 
             });
         }
     }
 
     public void run() {
+    	//creates the layout for the day buttons and displays the exercises for each day, and the search for each day
+    	
         setLayout(new BorderLayout());
         setBackground(Color.PINK);
 
