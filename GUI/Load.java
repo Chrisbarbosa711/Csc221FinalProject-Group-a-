@@ -148,6 +148,16 @@ public class Load extends JPanel {
             new DayButton(Buttons, Pages, day);
         }
 
+        JButton archiveButton = new JButton("Clear Tracker");
+        archiveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DBconnection.deleteWorkouts();
+                System.out.println("Archived.");
+            }
+        });
+        add(archiveButton, BorderLayout.SOUTH);
+
         add(Buttons, BorderLayout.NORTH);
         add(Pages, BorderLayout.CENTER);
     }
