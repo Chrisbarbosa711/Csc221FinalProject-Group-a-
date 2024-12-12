@@ -169,7 +169,32 @@ public class DBconnection {
         }
     }
     
-    
+    public static void deleteWorkouts() {
+        String[] week = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+       
+        String updateSql = "UPDATE tracker SET Done = 0, Monday = 0, Tuesday = 0, Wednesday = 0, Thursday = 0, Friday = 0, Saturday = 0, Sunday = 0 " +
+                           "WHERE Track_exercise = ?";
+
+        try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+            for (String day : week) {
+            	System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+                try (ResultSet exercises = dayExercises(day)) {
+                    while (exercises != null && exercises.next()) {
+                        String exerciseName = exercises.getString("Track_exercise");
+                        updateStmt.setString(1, exerciseName);
+                        updateStmt.addBatch();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Error: " + ex.getMessage());
+                }
+            }
+            updateStmt.executeBatch();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
     
 }
 
