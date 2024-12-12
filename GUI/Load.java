@@ -160,19 +160,22 @@ public void refreshDayExercises(String day, JPanel Pages) {
 	    }
 	}
 
-    public class DayButton extends JButton {
-        private static final long serialVersionUID = 1L;
-
+//this way we can write less lines
+public class DayButton extends JButton {
+	private static final long serialVersionUID = 1L;
+	//take parameter panel, this adds the button to that panel
+	//parameter day adds whatever type of panel you want to be tied to the button
+	//text is the name of the button
         DayButton(JPanel panel, JPanel day, String text) {
-            super(text);
-            panel.add(this);
-
-            this.addActionListener(e -> {
+		super(text);
+		//this adds the button
+		panel.add(this);
+		this.addActionListener(e -> {
             	//refreshes the page to pull any thing that was added, etc.
                 refreshDayExercises(text, day); 
-            });
-        }
-    }
+	});
+	}
+}
 
     public void run() {
     	//creates the layout for the day buttons and displays the exercises for each day, and the search for each day
@@ -180,15 +183,18 @@ public void refreshDayExercises(String day, JPanel Pages) {
         setLayout(new BorderLayout());
         setBackground(Color.PINK);
 
+	//make the buttons a GridLayout bcs it's easier to do
         JPanel Buttons = new JPanel(new GridLayout(1, 7, 20, 0));
         JPanel Pages = new JPanel(new CardLayout());
 
+	//for each day in the week create a button
         String[] week = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         for (String day : week) {
             new DayButton(Buttons, Pages, day);
         }
 
-        JButton archiveButton = new JButton("Clear Tracker");
+	//Button to create archive
+        JButton deleteButton = new JButton("Clear Tracker");
         archiveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -196,7 +202,7 @@ public void refreshDayExercises(String day, JPanel Pages) {
                 System.out.println("Archived.");
             }
         });
-        add(archiveButton, BorderLayout.SOUTH);
+        add(deleteButton, BorderLayout.SOUTH);
 
         add(Buttons, BorderLayout.NORTH);
         add(Pages, BorderLayout.CENTER);
