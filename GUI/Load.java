@@ -26,9 +26,14 @@ public class Load extends JPanel {
 	        // Create a button for each exercise
 	        for (String[] exercise : exerciseList) {
 	            String exerciseName = exercise[0];
-
+	            String exSets = exercise[1];
+	            String exReps = exercise[2];
 	            // Create a button for the exercise
-	            JButton exerciseButton = new JButton(exerciseName);
+	            
+	            JButton exerciseButton;
+	    
+	            exerciseButton = new JButton(exerciseName + " - " + exSets + " sets, " + exReps + " reps" );
+	            
 	            exerciseButton.setFont(new Font("Arial", Font.PLAIN, 16));
 
 	            // Define a custom class to store the exercise and its reps/sets
@@ -37,10 +42,10 @@ public class Load extends JPanel {
 	                String reps;
 	                String sets;
 
-	                public ExerciseInfo(String name) {
+	                public ExerciseInfo(String name, String reps, String sets) {
 	                    this.name = name;
-	                    this.reps = "";
-	                    this.sets = "";
+	                    this.reps = reps;
+	                    this.sets = sets;
 	                }
 
 	                public String getDisplayText() {
@@ -52,7 +57,7 @@ public class Load extends JPanel {
 	            }
 
 	            // Store exercise information
-	            ExerciseInfo exerciseInfo = new ExerciseInfo(exerciseName);
+	            ExerciseInfo exerciseInfo = new ExerciseInfo(exerciseName, exReps, exSets);
 
 	            // Define what happens when the exercise button is clicked
 	            exerciseButton.addActionListener(e -> {
@@ -76,10 +81,26 @@ public class Load extends JPanel {
 
 	                    // Validate and update the reps and sets if not empty
 	                    if (reps != null && !reps.isEmpty()) {
-	                        exerciseInfo.reps = reps;
+	                    	
+	                    	
+	                        try {
+	                            int repsCount = Integer.parseInt(reps);
+	                            exerciseInfo.reps = reps;
+	                	        DBconnection.setReps(exerciseName, repsCount);
+	                        } catch (NumberFormatException e1) {
+	                            System.out.println("Invalid input: " + reps + " is not a number.");
+	                        };
+	                        
+	                        
 	                    }
 	                    if (sets != null && !sets.isEmpty()) {
-	                        exerciseInfo.sets = sets;
+	                        try {
+	                            int setCountt = Integer.parseInt(sets);
+	                            exerciseInfo.sets = sets;
+	                	        DBconnection.setSets(exerciseName, setCountt);
+	                        } catch (NumberFormatException e2) {
+	                            System.out.println("Invalid input: " + sets + " is not a number.");
+	                        }    
 	                    }
 
 	                    // Update the button text to reflect the reps and sets

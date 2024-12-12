@@ -18,7 +18,7 @@ public class UnpackRS {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        System.out.println("Unpacking Exercise search");
         return exercises;  // Return the ArrayList containing the exercises
     }
 	
@@ -47,7 +47,7 @@ public class UnpackRS {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        System.out.println("Unpacking DayExercise");
         return dayexerciseDetails;  // Return the ArrayList of exercise details
     }
 	
@@ -88,7 +88,7 @@ public class UnpackRS {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        System.out.println("Unpacking Exercise detail");
         return exerciseDetails;  // Return the array of strings
     }
 	

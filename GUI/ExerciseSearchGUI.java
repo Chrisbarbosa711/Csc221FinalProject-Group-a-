@@ -1,6 +1,6 @@
 package GUI;
 
-import SQLtest.DBconnection;
+   import SQLtest.DBconnection;
 import SQLtest.UnpackRS;
 
 import javax.swing.*;
