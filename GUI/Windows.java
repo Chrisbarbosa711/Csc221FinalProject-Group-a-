@@ -13,36 +13,66 @@ public class Windows extends JFrame{
     
         // Create a JFrame (the window)
         final JFrame launchPage = new JFrame("Fitness application");
-        JLabel LPGreeting = new JLabel("Welcome to the fitness tracker application", SwingConstants.CENTER);
-        JLabel LogInLabel = new JLabel("please enter your name in the textbox below:", SwingConstants.CENTER);
+        launchPage.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        gbc.insets = new Insets(5, 10, 5, 10);
+        
+        JLabel LPGreeting = new JLabel("Welcome to the fitness tracker application");
+        JLabel LogInLabel = new JLabel("please enter your name in the textbox below:");
         LPGreeting.setFont(new Font("Arial", Font.PLAIN, 30));
 
         final JButton submitButton = new JButton("Submit");
         JButton EnterApp = new JButton("Enter");
         EnterApp.setVisible(false);
         final JTextField textField = new JTextField(20);
-
-        launchPage.add(LPGreeting, BorderLayout.NORTH);
-        launchPage.add(textField);
-        launchPage.add(submitButton);
-        launchPage.add(EnterApp, BorderLayout.SOUTH);
-        launchPage.add(LogInLabel, BorderLayout.CENTER);
+        
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1; 
+        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.fill = GridBagConstraints.BOTH;
+        launchPage.add(LPGreeting, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        launchPage.add(LogInLabel, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        launchPage.add(textField, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        launchPage.add(submitButton, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        launchPage.add(EnterApp, gbc);
         launchPage.pack();      
     
         // Set the size of the frame
-        launchPage.setSize(475, 500);
+        launchPage.setSize(600, 600);
+        launchPage.setLocationRelativeTo(null);
 
         //button two will be used to transfer to the next page
         EnterApp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Load loadPanel = new Load();
-                // Remove specific components
-                launchPage.remove(LPGreeting);
-                launchPage.remove(LogInLabel);
-                launchPage.remove(textField);
-                launchPage.remove(submitButton);
-                launchPage.remove(EnterApp);
                 
+                
+                launchPage.getContentPane().removeAll();
+                launchPage.setLayout(new BorderLayout());
                 launchPage.add(loadPanel, BorderLayout.CENTER);
                 loadPanel.run();
                 launchPage.revalidate();
@@ -50,7 +80,7 @@ public class Windows extends JFrame{
             }
         });
 
-        submitButton.setBounds(800, 420, 100, 50);
+        
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
