@@ -67,6 +67,7 @@ public class Load extends JPanel {
 	                    exercisePanel.remove(exerciseButton);
 	                    exercisePanel.revalidate();  // Revalidate the panel to update the layout
 	                    exercisePanel.repaint();  // Repaint the panel to reflect the changes
+	                    DBconnection.deleteExercise(day, exerciseName);
 	                    System.out.println(exerciseName + " has been removed from " + day);
 	                } else {
 	                    // If the user doesn't want to remove the exercise, ask for reps and sets
