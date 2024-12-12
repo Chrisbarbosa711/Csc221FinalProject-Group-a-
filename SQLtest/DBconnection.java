@@ -172,7 +172,7 @@ public class DBconnection {
     public static void deleteWorkouts() {
         String[] week = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
        
-        String updateSql = "UPDATE tracker SET Done = 0, Monday = 0, Tuesday = 0, Wednesday = 0, Thursday = 0, Friday = 0, Saturday = 0, Sunday = 0 sets = 0, reps = 0 " +
+        String updateSql = "UPDATE tracker SET Done = 0, Monday = 0, Tuesday = 0, Wednesday = 0, Thursday = 0, Friday = 0, Saturday = 0, Sunday = 0, sets = 0, reps = 0 " +
                            "WHERE Track_exercise = ?";
 
         try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
