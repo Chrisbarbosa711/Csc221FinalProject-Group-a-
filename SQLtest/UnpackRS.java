@@ -3,6 +3,8 @@ package SQLtest;
 import java.sql.*;
 import java.util.ArrayList;
 
+
+// some of the functions in DBconnection return a result set, this file will unpack the result set into a arraylist as we need it 
 public class UnpackRS {
 
     // Static method to unpack a ResultSet into an ArrayList of exercises (strings)
@@ -88,7 +90,7 @@ public class UnpackRS {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Unpacking Exercise detail");
+        System.out.println("Unpacking Exercise details");
         return exerciseDetails;  // Return the array of strings
     }
 	

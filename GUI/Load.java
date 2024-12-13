@@ -195,7 +195,7 @@ public class DayButton extends JButton {
 
 	//Button to create archive
         JButton deleteButton = new JButton("Clear Tracker");
-        archiveButton.addActionListener(new ActionListener() {
+        deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DBconnection.deleteWorkouts();

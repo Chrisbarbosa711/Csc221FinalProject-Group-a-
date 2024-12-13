@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
+
+// this file will establish connection with database and also perform the necessary query commands to update information and retrieve information.
 public class DBconnection {
     private static Connection conn;
     
@@ -42,7 +44,7 @@ public class DBconnection {
     }
     
    
-    // search function:
+    // search function:  // used when searching for a exercise by name
     public static ResultSet searchExercise(String searchKey) {
     	System.out.println("Search request recieved");
         ResultSet rs = null;
@@ -169,7 +171,7 @@ public class DBconnection {
         }
     }
     
-    public static void deleteWorkouts() {
+    public static void deleteWorkouts() {// tracker deleting, basically resets the database.
         String[] week = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
        
         String updateSql = "UPDATE tracker SET Done = 0, Monday = 0, Tuesday = 0, Wednesday = 0, Thursday = 0, Friday = 0, Saturday = 0, Sunday = 0, sets = 0, reps = 0 " +
